@@ -23,6 +23,7 @@ jobs:
           chmod +x scripts/lines-of-lock.sh
 
           PR_MODIFY_LOCK=$(scripts/lines-of-lock.sh)
+          PR_MODIFY_LOCK=$(PR_MODIFY_LOCK:-0)
 
           echo "PR_MODIFY_LOCK=${PR_MODIFY_LOCK}" >> $GITHUB_ENV
 
