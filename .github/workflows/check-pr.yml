@@ -64,6 +64,8 @@ jobs:
                 MESSAGE="${MESSAGE//\$PR_MODIFY_REST/$PR_MODIFY_REST}"
                 MESSAGE="${MESSAGE//\$PR_EXTRA/$PR_EXTRA}"
 
+                echo $MESSAGE
+
                 echo "MESSAGE=${MESSAGE}" >> $GITHUB_ENV
 
                 
