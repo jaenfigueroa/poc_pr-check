@@ -19,8 +19,8 @@ jobs:
 
             - name: Obtener la suma de lineas modificadas de todos los -lock.
               run: |
-                chmod +x scripts/number_lines_of_all_lock.sh
-                PR_MODIFY_LOCK=$(scripts/number_lines_of_all_lock.sh) || 0
+                chmod +x scripts/lines_of_lock.sh
+                PR_MODIFY_LOCK=$(scripts/lines_of_lock.sh) || 0
 
                 echo "PR_MODIFY_LOCK=${PR_MODIFY_LOCK}" >> $GITHUB_ENV
                 
@@ -47,9 +47,9 @@ jobs:
 
             - name: Generar el mensaje para comentar en el pr
               run: |
-                TITLE=$(cat "scripts/templates/title.md")
-                TEMPLATE_TABLE=$(cat "scripts/templates/results-table.md")
-                NOTE=$(cat "scripts/templates/important-note.md")
+                TITLE=$(cat "templates/title.md")
+                TEMPLATE_TABLE=$(cat "templates/results-table.md")
+                NOTE=$(cat "templates/important-note.md")
                 
                 # Crear el mensaje
                 MESSAGE="$TITLE\n"
