@@ -22,9 +22,9 @@ jobs:
         env:
           PR_DESTINATION_BRANCH: ${{ github.event.pull_request.base.ref }}
         run: |
-          chmod +x bash-scripts/lines-of-lock.sh
+          chmod +x scripts/lines-of-lock.sh
 
-          PR_MODIFY_LOCK=$(bash-scripts/lines-of-lock.sh)
+          PR_MODIFY_LOCK=$(scripts/lines-of-lock.sh)
 
           echo "PR_MODIFY_LOCK=${PR_MODIFY_LOCK}" >> $GITHUB_ENV
 
