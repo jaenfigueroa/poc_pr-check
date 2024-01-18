@@ -53,15 +53,22 @@ jobs:
               run: |
                 # Reemplazar las variables
                 
-                sed -e 's/PR_ADDITIONS/111/' \
-                    -e 's/PR_DELETIONS/222/' \
-                    -e 's/PR_MODIFY_ALL/333/' \
-                    -e 's/PR_MODIFY_LOCK/444/' \
-                    -e 's/PR_MODIFY_REST/555/' \
-                    -e 's/PR_EXTRA/666/' templates/pr-report.txt
+                #sed -e 's/PR_ADDITIONS/111/' \
+                #    -e 's/PR_DELETIONS/222/' \
+                #    -e 's/PR_MODIFY_ALL/333/' \
+                #    -e 's/PR_MODIFY_LOCK/444/' \
+                #    -e 's/PR_MODIFY_REST/555/' \
+                #    -e 's/PR_EXTRA/666/' templates/pr-report.txt
                 
                 # MESSAGE=$(echo "$(cat templates/pr-report.txt)")
-                MESSAGE=$(<templates/pr-report.txt)
+                # MESSAGE=$(<templates/pr-report.txt)
+
+                MESSAGE=$(sed -e 's/PR_ADDITIONS/111/' \
+                                -e 's/PR_DELETIONS/222/' \
+                                -e 's/PR_MODIFY_ALL/333/' \
+                                -e 's/PR_MODIFY_LOCK/444/' \
+                                -e 's/PR_MODIFY_REST/555/' \
+                                -e 's/PR_EXTRA/666/' templates/pr-report.txt)
 
 
                 echo "MESSAGE=${MESSAGE}" >> $GITHUB_ENV
