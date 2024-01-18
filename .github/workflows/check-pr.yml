@@ -61,14 +61,7 @@ jobs:
                   -e 's/PR_EXTRA/666/' \
                   -e ':a;N;$!ba;s/\n/\\n/g' templates/pr-report.txt)
 
-
-                # MESSAGE=$(echo "$(cat templates/pr-report.txt)")
-                # MESSAGE=$(<templates/pr-report.txt)
-
-                # echo "MESSAGE=${cat templates/pr-report.txt}" >> $GITHUB_ENV
                 echo "MESSAGE=${MESSAGE}" >> $GITHUB_ENV
-
-
                 
             - name: Eliminar reportes previos de los comentarios
               run: |
