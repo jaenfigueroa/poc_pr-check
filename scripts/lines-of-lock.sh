@@ -1,4 +1,4 @@
-DIFF_OUTPUT=$(git diff --stat origin/dev)
+DIFF_OUTPUT=$(git diff --stat origin/$PR_DESTINATION_BRANCH)
 
 DIFF_OUTPUT_WITHOUT_LAST_LINE=$(echo "$DIFF_OUTPUT" | head -n -1)
 
