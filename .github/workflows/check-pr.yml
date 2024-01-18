@@ -19,13 +19,10 @@ jobs:
 
             - name: Obtener la suma de lineas modificadas de todos los -lock.
               run: |
-                echo "car 1"
-                pwd
-                tree -L 2
-                echo "car 2"
-                
                 chmod +x scripts/lines-of-lock.sh
                 PR_MODIFY_LOCK=$(scripts/lines-of-lock.sh) || 0
+
+                echo $PR_MODIFY_LOCK
 
                 echo "PR_MODIFY_LOCK=${PR_MODIFY_LOCK}" >> $GITHUB_ENV
                 
