@@ -10,7 +10,6 @@ env:
   PR_ADDITIONS: ${{ github.event.pull_request.additions }}
   PR_DELETIONS: ${{ github.event.pull_request.deletions }}
   PR_DESTINATION_BRANCH: ${{ github.event.pull_request.base.ref }}
-  PR_ORIGIN_BRANCH: ${{ github.event.pull_request.head.ref }}
 jobs:
   check_pr_size:
     runs-on: ubuntu-latest
