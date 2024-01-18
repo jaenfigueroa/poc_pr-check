@@ -45,7 +45,7 @@ jobs:
       - name: Generate the message for commenting on the pr
         run: |
           if [[ $PR_MODIFY_REST -gt $MAX_LINES_PR ]]; then
-            NOTE="@${{ github.actor }} Ups, tu pull request tiene mas de $MAX_LINES_PR lineas modificadas, tienes un total de $PR_MODIFY_REST, por favor considera dividir este pull request."
+            NOTE="@${{ github.actor }} Ups, tu pull request tiene mas de $MAX_LINES_PR lineas modificadas, tienes un total de $PR_MODIFY_REST, considera dividir este pull request."
           else
             NOTE="Perfecto, el pull request no sobrepasa las $MAX_LINES_PR lineas modificadas."
           fi
