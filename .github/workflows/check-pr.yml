@@ -59,7 +59,7 @@ jobs:
                     -e "s/PR_MODIFY_ALL/$PR_MODIFY_ALL/" \
                     -e "s/PR_MODIFY_LOCK/$PR_MODIFY_LOCK/" \
                     -e "s/PR_MODIFY_REST/$PR_MODIFY_REST/" \
-                    -e "s/PR_EXTRA/$PR_EXTRA/" templates/pr-report.txt)
+                    -e "s/PR_EXTRA/$PR_EXTRA/" templates/pr-report.md)
                 
                 echo "MESSAGE=${MESSAGE}" >> $GITHUB_ENV
                 
