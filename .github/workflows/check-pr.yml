@@ -52,24 +52,26 @@ jobs:
             - name: Generar el mensaje para comentar en el pr
               run: |
                 # TEMPLATE_MESSAGE=$(cat "templates/pr-report.txt")
-                TEMPLATE_MESSAGE=$(< "templates/pr-report.txt")
+                # TEMPLATE_MESSAGE=$(< "templates/pr-report.txt")
 
-                TEMPLATE_MESSAGE=$(echo -e "$TEMPLATE_MESSAGE" | tr '\n' '\\n')
+                # TEMPLATE_MESSAGE=$(echo -e "$TEMPLATE_MESSAGE" | tr '\n' '\\n')
 
-                TEMPLATE_MESSAGE=$(echo "TEMPLATE_MESSAGE=\"$TEMPLATE_MESSAGE\"")
+                # TEMPLATE_MESSAGE=$(echo "TEMPLATE_MESSAGE=\"$TEMPLATE_MESSAGE\"")
                 
                 
                 # Reemplazar las variables
-                MESSAGE="${TEMPLATE_MESSAGE//\$PR_ADDITIONS/$PR_ADDITIONS}"
-                MESSAGE="${MESSAGE//\$PR_DELETIONS/$PR_DELETIONS}"
-                MESSAGE="${MESSAGE//\$PR_MODIFY_ALL/$PR_MODIFY_ALL}"
-                MESSAGE="${MESSAGE//\$PR_MODIFY_LOCK/$PR_MODIFY_LOCK}"
-                MESSAGE="${MESSAGE//\$PR_MODIFY_REST/$PR_MODIFY_REST}"
-                MESSAGE="${MESSAGE//\$PR_EXTRA/$PR_EXTRA}"
+          
 
-                echo $MESSAGE
+                sed 's/PR_ADDITIONS/PR_ADDITIONS_XX/' templates/pr-report.txt
+                sed 's/PR_DELETIONS/PR_DELETIONS_XX/' templates/pr-report.txt
+                sed 's/PR_MODIFY_ALL/PR_MODIFY_ALL_XX/' templates/pr-report.txt
+                sed 's/PR_MODIFY_LOCK/PR_MODIFY_LOCK_XX/' templates/pr-report.txt
+                sed 's/PR_MODIFY_REST/PR_MODIFY_REST__XX/' templates/pr-report.txt
+                sed 's/PR_EXTRA/PR_EXTRA_XX/' templates/pr-report.txt
 
-                echo "MESSAGE=${MESSAGE}" >> $GITHUB_ENV
+                echo "$(cat templates/pr-report.txt
+
+                # echo "MESSAGE=${MESSAGE}" >> $GITHUB_ENV
 
                 
             - name: Eliminar reportes previos de los comentarios
