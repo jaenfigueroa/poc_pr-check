@@ -55,6 +55,9 @@ jobs:
                 TEMPLATE_MESSAGE=$(< "templates/pr-report.txt")
 
                 TEMPLATE_MESSAGE=$(echo -e "$TEMPLATE_MESSAGE" | tr '\n' '\\n')
+
+                TEMPLATE_MESSAGE=$(echo "TEMPLATE_MESSAGE=\"$TEMPLATE_MESSAGE\"")
+                
                 
                 # Reemplazar las variables
                 MESSAGE="${TEMPLATE_MESSAGE//\$PR_ADDITIONS/$PR_ADDITIONS}"
