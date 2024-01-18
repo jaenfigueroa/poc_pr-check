@@ -64,11 +64,12 @@ jobs:
                 # MESSAGE=$(echo "$(cat templates/pr-report.txt)")
                 # MESSAGE=$(<templates/pr-report.txt)
 
-                
+
+                cat templates/pr-report.txt
 
 
                 # echo "MESSAGE=${cat templates/pr-report.txt}" >> $GITHUB_ENV
-                echo "MESSAGE=$(cat templates/pr-report.txt)" >> $GITHUB_ENV
+                # echo "MESSAGE=${MESSAGE}" >> $GITHUB_ENV
 
 
                 
