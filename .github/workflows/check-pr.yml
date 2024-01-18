@@ -20,7 +20,9 @@ jobs:
             - name: Obtener la suma de lineas modificadas de todos los -lock.
               run: |
                 chmod +x scripts/lines-of-lock.sh
-
+                
+                PR_MODIFY_LOCK=$(scripts/lines-of-lock.sh)
+                
                 # Verifica si $PR_MODIFY_LOCK es nulo y asigna 0 en ese caso
                 PR_MODIFY_LOCK=${PR_MODIFY_LOCK:-0}
                 
