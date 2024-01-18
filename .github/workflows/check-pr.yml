@@ -24,8 +24,8 @@ jobs:
                 tree -L 2
                 echo "car 2"
                 
-                chmod +x scripts/lines_of_lock.sh
-                PR_MODIFY_LOCK=$(scripts/lines_of_lock.sh) || 0
+                chmod +x scripts/lines-of-lock.sh
+                PR_MODIFY_LOCK=$(scripts/lines-of-lock.sh) || 0
 
                 echo "PR_MODIFY_LOCK=${PR_MODIFY_LOCK}" >> $GITHUB_ENV
                 
