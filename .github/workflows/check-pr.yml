@@ -61,14 +61,24 @@ jobs:
                 #  -e 's/$PR_EXTRA/666/' \
                 #  -e ':a;N;$!ba;s/\n/\\n/g' templates/pr-report.txt)
 
+                #MESSAGE=$(sed -e 's/PR_ADDITIONS/111/' \
+                #-e 's/PR_DELETIONS/222/' \
+                #-e 's/PR_MODIFY_ALL/333/' \
+                #-e 's/PR_MODIFY_LOCK/444/' \
+                #-e 's/PR_MODIFY_REST/555/' \
+                #-e 's/PR_EXTRA/666/' \
+                #-e ':a;N;$!ba;s/\n/\\n/g' templates/pr-report.txt)
+
+
                 MESSAGE=$(sed -e 's/PR_ADDITIONS/111/' \
                 -e 's/PR_DELETIONS/222/' \
                 -e 's/PR_MODIFY_ALL/333/' \
                 -e 's/PR_MODIFY_LOCK/444/' \
                 -e 's/PR_MODIFY_REST/555/' \
                 -e 's/PR_EXTRA/666/' \
-                -e ':a;N;$!ba;s/\n/\\n/g' templates/pr-report.txt)
-                
+                -e 's/:a;N;$!ba;s/\\n/\\\\n/g' templates/pr-report.txt)
+
+
                 echo "MESSAGE=${MESSAGE}" >> $GITHUB_ENV
                 
             - name: Eliminar reportes previos de los comentarios
