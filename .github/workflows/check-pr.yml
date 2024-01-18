@@ -8,7 +8,7 @@ jobs:
   check_pr_size:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      MAX_LINES_PR: ${{ vars.MAX_LINES_PR || 600 }}
+      MAX_LINES_PR: ${{ env.MAX_LINES_PR || 600 }}
       PR_COMMENTS_URL: ${{ github.event.pull_request.comments_url }}
       PR_ADDITIONS: ${{ github.event.pull_request.additions }}
       PR_DELETIONS: ${{ github.event.pull_request.deletions }}
