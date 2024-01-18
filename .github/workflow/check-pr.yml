@@ -47,32 +47,16 @@ jobs:
 
             - name: Generar el mensaje para comentar en el pr
               run: |
-                TITLE=$(cat "templates/title.md")
-                TEMPLATE_TABLE=$(cat "templates/results-table.md")
-                NOTE=$(cat "templates/important-note.md")
-                
-                # Crear el mensaje
-                MESSAGE="$TITLE\n"
-
-                
-                if [[ $PR_MODIFY_REST -gt $MAX_LINES_PR ]]; then
-                  MESSAGE+="@jaenfigueroa Ups, tu pull request tiene más de $MAX_LINES_PR líneas modificadas, tienes un total de $PR_MODIFY_REST.\n"
-                else
-                  MESSAGE+="Perfecto, el pull request no sobrepasa las $MAX_LINES_PR líneas modificadas.\n"
-                fi
-
+                TEMPLATE_MESSAGE=$(cat "templates/pr-report.txt")
                 
                 # Reemplazar las variables
-                TABLE="${TEMPLATE_TABLE//\$PR_ADDITIONS/$PR_ADDITIONS}"
-                TABLE="${TABLE//\$PR_DELETIONS/$PR_DELETIONS}"
-                TABLE="${TABLE//\$PR_MODIFY_ALL/$PR_MODIFY_ALL}"
-                TABLE="${TABLE//\$PR_MODIFY_LOCK/$PR_MODIFY_LOCK}"
-                TABLE="${TABLE//\$PR_MODIFY_REST/$PR_MODIFY_REST}"
-                TABLE="${TABLE//\$PR_EXTRA/$PR_EXTRA}"
+                MESSAGE="${TEMPLATE_MESSAGE//\$PR_ADDITIONS/$PR_ADDITIONS}"
+                MESSAGE="${MESSAGE//\$PR_DELETIONS/$PR_DELETIONS}"
+                MESSAGE="${MESSAGE//\$PR_MODIFY_ALL/$PR_MODIFY_ALL}"
+                MESSAGE="${MESSAGE//\$PR_MODIFY_LOCK/$PR_MODIFY_LOCK}"
+                MESSAGE="${MESSAGE//\$PR_MODIFY_REST/$PR_MODIFY_REST}"
+                MESSAGE="${MESSAGE//\$PR_EXTRA/$PR_EXTRA}"
 
-                MESSAGE+="</br>\n$TABLE\n</br>\n\n"
-                MESSAGE+="$NOTE"
-                
                 echo "MESSAGE=${MESSAGE}" >> $GITHUB_ENV
 
                 
