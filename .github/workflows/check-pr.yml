@@ -61,7 +61,7 @@ jobs:
                 #  -e 's/$PR_EXTRA/666/' \
                 #  -e ':a;N;$!ba;s/\n/\\n/g' templates/pr-report.txt)
 
-                MESSAGE=$(sed -e ":a;N;$!ba;s/\n/\\n/g"\
+                MESSAGE=$(sed -e ':a;N;$!ba;s/\n/\\n/g'\
                     -e "s/PR_ADDITIONS/$PR_ADDITIONS/" \
                     -e "s/PR_DELETIONS/$PR_DELETIONS/" \
                     -e "s/PR_MODIFY_ALL/$PR_MODIFY_ALL/" \
