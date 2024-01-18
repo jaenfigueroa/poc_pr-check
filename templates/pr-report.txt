@@ -3,13 +3,12 @@ Perfecto, el pull request no sobrepasa las 600 líneas modificadas.
 
 | Tipo de Modificación| Cantidad |
 |-|:-:|
-| 🟢 Lineas agregadas | 920 |
-| 🔴 Lineas eliminadas | 203 |
-| 🟣 Total de lineas modificadas | 1123 |
-|  ⚪ └── Lineas modificadas solo de archivos lock | 923 |
-|  ⚪ └── **Restante de lineas modificadas** | **200** |
-| 🟡 Cantidad de lineas Extra | 0 |
-</br>
+| 🟢 Lineas agregadas | $PR_ADDITIONS |
+| 🔴 Lineas eliminadas | $PR_DELETIONS |
+| 🟣 Total de lineas modificadas | $PR_MODIFY_ALL |
+|  ⚪ └── Lineas modificadas solo de archivos lock | $PR_MODIFY_LOCK |
+|  ⚪ └── **Restante de lineas modificadas** | **$PR_MODIFY_REST** |
+| 🟡 Cantidad de lineas Extra | $PR_EXTRA |
 
 > [!IMPORTANT]
 > No se incluye la cantidad de líneas modificadas de los archivos de tipo lock, tales como:
