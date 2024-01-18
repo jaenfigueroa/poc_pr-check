@@ -2,7 +2,7 @@
 Perfecto, el pull request no sobrepasa las 600 líneas modificadas.
 
 | Tipo de Modificación| Cantidad |
-|-|-|
+|-|:-:|
 | 🟢 Lineas agregadas | 920 |
 | 🔴 Lineas eliminadas | 203 |
 | 🟣 Total de lineas modificadas | 1123 |
