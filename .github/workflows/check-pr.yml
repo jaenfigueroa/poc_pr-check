@@ -67,7 +67,9 @@ jobs:
                 
 
 
-                echo "MESSAGE=${cat templates/pr-report.txt}" >> $GITHUB_ENV
+                # echo "MESSAGE=${cat templates/pr-report.txt}" >> $GITHUB_ENV
+                echo "MESSAGE=$(cat templates/pr-report.txt)" >> $GITHUB_ENV
+
 
                 
             - name: Eliminar reportes previos de los comentarios
