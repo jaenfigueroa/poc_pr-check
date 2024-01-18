@@ -21,6 +21,7 @@ jobs:
               run: |
                 echo "car 1"
                 pwd
+                tree -L 2
                 echo "car 2"
                 
                 chmod +x scripts/lines_of_lock.sh
