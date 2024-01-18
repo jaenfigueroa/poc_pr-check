@@ -11,7 +11,7 @@ NOTE
 | 🟡 Cantidad de lineas Extra | PR_EXTRA |
 
 > [!IMPORTANT]
-> No se incluye la cantidad de líneas modificadas de los archivos de tipo lock, tales como:
+> No se incluye la cantidad de líneas modificadas en los archivos de tipo lock, tales como:
 > - package-lock.json
 > - yarn.lock
 > - pnpm-lock.yaml
