@@ -1,17 +1,17 @@
 on:
   pull_request:
-    branches: "*"
+    branches: '*'
 
 permissions: write-all
-env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  MAX_LINES_PR: ${{ secrets.MAX_LINES_PR || 600 }}
-  PR_COMMENTS_URL: ${{ github.event.pull_request.comments_url }}
-  PR_ADDITIONS: ${{ github.event.pull_request.additions }}
-  PR_DELETIONS: ${{ github.event.pull_request.deletions }}
-  PR_DESTINATION_BRANCH: ${{ github.event.pull_request.base.ref }}
+
 jobs:
   check_pr_size:
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      MAX_LINES_PR: ${{ vars.MAX_LINES_PR || 600 }}
+      PR_COMMENTS_URL: ${{ github.event.pull_request.comments_url }}
+      PR_ADDITIONS: ${{ github.event.pull_request.additions }}
+      PR_DELETIONS: ${{ github.event.pull_request.deletions }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -19,10 +19,12 @@ jobs:
           fetch-depth: 0
 
       - name: Obtain the total number of modified lines of the lock files
+        env:
+          PR_DESTINATION_BRANCH: ${{ github.event.pull_request.base.ref }}
         run: |
-          chmod +x scripts/lines-of-lock.sh
+          chmod +x bash-scripts/lines-of-lock.sh
 
-          PR_MODIFY_LOCK=$(scripts/lines-of-lock.sh)
+          PR_MODIFY_LOCK=$(bash-scripts/lines-of-lock.sh)
 
           echo "PR_MODIFY_LOCK=${PR_MODIFY_LOCK}" >> $GITHUB_ENV
 
