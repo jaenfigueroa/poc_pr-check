@@ -44,9 +44,7 @@ jobs:
 
       - name: Generate the message for commenting on the pr
         run: |
-          OVER_THE_LIMIT=$((PR_MODIFY_REST > MAX_LINES_PR))
-
-          if [[ OVER_THE_LIMIT -eq 1]]; then
+          if [[ $PR_MODIFY_REST -gt $MAX_LINES_PR ]]; then
             NOTE="@${{ github.actor }} Ups, tu pull request tiene mas de $MAX_LINES_PR lineas modificadas, tienes un total de $PR_MODIFY_REST, por favor considera dividir este pull request."
           else
             NOTE="Perfecto, el pull request no sobrepasa las $MAX_LINES_PR lineas modificadas."
@@ -62,7 +60,6 @@ jobs:
               -e "s/PR_EXTRA/$PR_EXTRA/" templates/pr-report.md)
 
           echo "MESSAGE=${MESSAGE}" >> $GITHUB_ENV
-          echo "OVER_THE_LIMIT=${OVER_THE_LIMIT}" >> $GITHUB_ENV
 
       - name: Remove previous reports from comments
         run: |
@@ -98,7 +95,7 @@ jobs:
 
       - name: Stop the execution of the workflow if the limit of modified lines is exceeded.
         run: |
-          if [[ $OVER_THE_LIMIT -eq 1]]
+          if [[ $PR_MODIFY_REST -gt $MAX_LINES_PR ]]
           then
               echo "Warning - total lines changed is greater than" $MAX_LINES_PR.
               echo "Please consider breaking this PR down."
