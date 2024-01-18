@@ -1,5 +1,5 @@
 # ![Check](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png) Resultados de la pre-revisión del PR
-Perfecto, el pull request no sobrepasa las 600 líneas modificadas.
+# Perfecto, el pull request no sobrepasa las 600 líneas modificadas.
 
 | Tipo de Modificación| Cantidad |
 |-|:-:|
