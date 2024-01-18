@@ -20,8 +20,8 @@ jobs:
       - name: Obtain the total number of modified lines of the lock files
         run: |
           # echo "${{ github.event.pull_request }}"
-          echo "${{ toJson(github.event.pull_request) }}"
-          echo "$((github.event.pull_request))"
+          # echo "${{ toJson(github.event.pull_request) }}"
+          echo "$((github))"
 
         
           chmod +x scripts/lines-of-lock.sh
