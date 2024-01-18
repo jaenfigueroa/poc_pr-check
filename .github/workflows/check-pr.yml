@@ -52,8 +52,15 @@ jobs:
             - name: Generar el mensaje para comentar en el pr
               run: |
                 # Reemplazar las variables
+                
+                if [[ $PR_TOTAL_LINES_CHANGED -gt $MAX_LINES_PR ]]; then
+                  NOTE="@${{ github.actor }} Ups, tu pull request tiene mas de $MAX_LINES_PR lineas modificadas, tienes un total de $PR_MODIFY_REST.\n"
+                else
+                  NOTE="Perfecto, el pull request no sobrepasa las $MAX_LINES_PR lineas modificadas.\n"
+                fi
 
                 MESSAGE=$(sed -e ':a;N;$!ba;s/\n/\\n/g'\
+                    -e "s/NOTE/$NOTE/" \
                     -e "s/PR_ADDITIONS/$PR_ADDITIONS/" \
                     -e "s/PR_DELETIONS/$PR_DELETIONS/" \
                     -e "s/PR_MODIFY_ALL/$PR_MODIFY_ALL/" \
