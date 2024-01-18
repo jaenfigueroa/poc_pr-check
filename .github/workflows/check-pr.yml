@@ -68,10 +68,10 @@ jobs:
                     -e 's/PR_MODIFY_REST/555/' \
                     -e 's/PR_EXTRA/666/' templates/pr-report.txt
                 
-                echo "$(cat templates/pr-report.txt)"
+                # echo "$(cat templates/pr-report.txt)"
 
 
-                # echo "MESSAGE=${MESSAGE}" >> $GITHUB_ENV
+                echo "MESSAGE=${MESSAGE}" >> $GITHUB_ENV
 
                 
             - name: Eliminar reportes previos de los comentarios
