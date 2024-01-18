@@ -1,4 +1,4 @@
-DIFF_OUTPUT=$(git diff --stat origin/$PR_DESTINATION_BRANCH)
+DIFF_OUTPUT=$(git diff --stat origin/main)
 
 DIFF_OUTPUT_WITHOUT_LAST_LINE=$(echo "$DIFF_OUTPUT" | head -n -1)
 
@@ -8,7 +8,9 @@ while IFS= read -r line; do
     file=$(echo "$line" | sed -n 's/^[[:space:]]*\([^ ]\+\)[[:space:]]*|.*$/\1/p')
     value=$(echo "$line" | sed -n 's/.*|\s*\([0-9]\+\).*$/\1/p')
 
-    JSON_STRING="$JSON_STRING \"$file\": $value,"
+    if [ -n "$file" ] && [ -n "$value" ]; then
+        JSON_STRING="$JSON_STRING \"$file\": $value,"
+    fi
 
 done <<< "$DIFF_OUTPUT_WITHOUT_LAST_LINE"
 
@@ -16,6 +18,7 @@ JSON_STRING="${JSON_STRING%,} }"
 
 FILTERED_JSON=$(echo "$JSON_STRING" | jq 'with_entries(select(.key | test("-lock.json$|-lock.yaml$|yarn.lock$|-lockb$")))')
 
-MODIFIED_LOCK_LINES_TOTAL=$(echo "$FILTERED_JSON" | jq '[.[]] | add')
+MODIFIED_LOCK_LINES_TOTAL=$(echo "$FILTERED_JSON" | jq '[.[]] | add // 0')
 
 echo $MODIFIED_LOCK_LINES_TOTAL
+
