@@ -9,8 +9,8 @@ env:
   PR_COMMENTS_URL: ${{ github.event.pull_request.comments_url }}
   PR_ADDITIONS: ${{ github.event.pull_request.additions }}
   PR_DELETIONS: ${{ github.event.pull_request.deletions }}
-  PR_DESTINATION: ${{ github.event.pull_request.base.ref }}
-  PR_ORIGIN: ${{ github.event.pull_request.head.ref }}
+  PR_DESTINATION_BRANCH: ${{ github.event.pull_request.base.ref }}
+  PR_ORIGIN_BRANCH: ${{ github.event.pull_request.head.ref }}
 jobs:
   check_pr_size:
     runs-on: ubuntu-latest
