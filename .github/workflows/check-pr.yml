@@ -58,7 +58,8 @@ jobs:
                     -e 's/PR_MODIFY_ALL/333/' \
                     -e 's/PR_MODIFY_LOCK/444/' \
                     -e 's/PR_MODIFY_REST/555/' \
-                    -e 's/PR_EXTRA/666/' templates/pr-report.txt
+                    -e 's/PR_EXTRA/666/' \
+                    -e ':a;N;$!ba;s/\n/\\n/g' templates/pr-report.txt)
                 
                 # MESSAGE=$(echo "$(cat templates/pr-report.txt)")
                 # MESSAGE=$(<templates/pr-report.txt)
