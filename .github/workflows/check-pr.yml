@@ -53,6 +53,20 @@ jobs:
               run: |
                 # TEMPLATE_MESSAGE=$(cat "templates/pr-report.txt")
                 TEMPLATE_MESSAGE=$(< "templates/pr-report.txt")
+
+                texto="
+                luna de miel
+                sol de primavera
+                estrellas azules
+                "
+                
+                # Eliminar los espacios en blanco alrededor de la cadena
+                TEMPLATE_MESSAGE=$(echo "$TEMPLATE_MESSAGE" | tr -d '[:space:]')
+                
+                # Reemplazar los saltos de línea con "\n"
+                TEMPLATE_MESSAGE=$(echo -e "$TEMPLATE_MESSAGE" | sed ':a;N;$!ba;s/\n/\\n/g')
+                
+                
                 
                 # Reemplazar las variables
                 MESSAGE="${TEMPLATE_MESSAGE//\$PR_ADDITIONS/$PR_ADDITIONS}"
