@@ -24,8 +24,6 @@ jobs:
 
           PR_MODIFY_LOCK=$(scripts/lines-of-lock.sh)
 
-          echo $PR_MODIFY_LOCK
-          
           echo "PR_MODIFY_LOCK=${PR_MODIFY_LOCK}" >> $GITHUB_ENV
 
       - name: Obtaining missing data for reporting purposes
