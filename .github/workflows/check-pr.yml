@@ -61,13 +61,7 @@ jobs:
                 
                 # Reemplazar las variables
           
-
-                sed 's/PR_ADDITIONS/PR_ADDITIONS_XX/' templates/pr-report.txt
-                sed 's/PR_DELETIONS/PR_DELETIONS_XX/' templates/pr-report.txt
-                sed 's/PR_MODIFY_ALL/PR_MODIFY_ALL_XX/' templates/pr-report.txt
-                sed 's/PR_MODIFY_LOCK/PR_MODIFY_LOCK_XX/' templates/pr-report.txt
-                sed 's/PR_MODIFY_REST/PR_MODIFY_REST__XX/' templates/pr-report.txt
-                sed 's/PR_EXTRA/PR_EXTRA_XX/' templates/pr-report.txt
+                sed -e 's/PR_ADDITIONS/111/' -e 's/PR_DELETIONS/222/' -e 's/PR_MODIFY_ALL/333/' -e 's/PR_MODIFY_LOCK/444/' -e 's/PR_MODIFY_REST/555/' -e 's/PR_EXTRA/666/' templates/pr-report.txt
 
                 echo "$(cat templates/pr-report.txt
 
