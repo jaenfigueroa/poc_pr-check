@@ -1,6 +1,6 @@
-on: 
-    pull_request: 
-        branches: dev
+on:
+  pull_request:
+    branches: dev
 
 permissions: write-all
 env:
@@ -10,108 +10,96 @@ env:
   PR_ADDITIONS: ${{ github.event.pull_request.additions }}
   PR_DELETIONS: ${{ github.event.pull_request.deletions }}
 jobs:
-    check_pr_size:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v2
-              with:
-                fetch-depth: 0
+  check_pr_size:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
-            - name: Obtener la suma de lineas modificadas de todos los -lock.
-              run: |
-                chmod +x scripts/lines-of-lock.sh
+      - name: Obtain the total number of modified lines of the lock files
+        run: |
+          chmod +x scripts/lines-of-lock.sh
 
-                PR_MODIFY_LOCK=$(scripts/lines-of-lock.sh)
-                
-                # Verifica si es nulo
-                PR_MODIFY_LOCK=${PR_MODIFY_LOCK:-0}
-                
-                echo "PR_MODIFY_LOCK=${PR_MODIFY_LOCK}" >> $GITHUB_ENV
- 
-            - name: obtener todos los datos para el reporte
-              run: |
-                # Obtener los resultados
-                # git_diff_result=$(git diff --stat origin/dev)
-                
-                # extraer valores valtantes
-                
-                PR_MODIFY_ALL=$(($PR_ADDITIONS + $PR_DELETIONS))
-                PR_MODIFY_REST=$(($PR_MODIFY_ALL - $PR_MODIFY_LOCK))
-                
-                if [ $PR_MODIFY_REST -gt $MAX_LINES_PR ]; then
-                    PR_EXTRA=$(($PR_MODIFY_REST - $MAX_LINES_PR))
-                else
-                    PR_EXTRA=0
-                fi
+          PR_MODIFY_LOCK=$(scripts/lines-of-lock.sh)
+          PR_MODIFY_LOCK=${PR_MODIFY_LOCK:-0}
 
-                echo "PR_MODIFY_ALL=${PR_MODIFY_ALL}" >> $GITHUB_ENV
-                echo "PR_MODIFY_REST=${PR_MODIFY_REST}" >> $GITHUB_ENV
-                echo "PR_EXTRA=${PR_EXTRA}" >> $GITHUB_ENV
+          echo "PR_MODIFY_LOCK=${PR_MODIFY_LOCK}" >> $GITHUB_ENV
 
+      - name: Obtaining missing data for reporting purposes
+        run: |
+          PR_MODIFY_ALL=$(($PR_ADDITIONS + $PR_DELETIONS))
+          PR_MODIFY_REST=$(($PR_MODIFY_ALL - $PR_MODIFY_LOCK))
 
-            - name: Generar el mensaje para comentar en el pr
-              run: |
-                # Reemplazar las variables
-                
-                if [[ $PR_MODIFY_REST -gt $MAX_LINES_PR ]]; then
-                  NOTE="@${{ github.actor }} Ups, tu pull request tiene mas de $MAX_LINES_PR lineas modificadas, tienes un total de $PR_MODIFY_REST."
-                else
-                  NOTE="Perfecto, el pull request no sobrepasa las $MAX_LINES_PR lineas modificadas."
-                fi
+          if [ $PR_MODIFY_REST -gt $MAX_LINES_PR ]; then
+              PR_EXTRA=$(($PR_MODIFY_REST - $MAX_LINES_PR))
+          else
+              PR_EXTRA=0
+          fi
 
-    
+          echo "PR_MODIFY_ALL=${PR_MODIFY_ALL}" >> $GITHUB_ENV
+          echo "PR_MODIFY_REST=${PR_MODIFY_REST}" >> $GITHUB_ENV
+          echo "PR_EXTRA=${PR_EXTRA}" >> $GITHUB_ENV
 
-                MESSAGE=$(sed -e ':a;N;$!ba;s/\n/\\n/g'\
-                    -e "s/NOTE/$NOTE/" \
-                    -e "s/PR_ADDITIONS/$PR_ADDITIONS/" \
-                    -e "s/PR_DELETIONS/$PR_DELETIONS/" \
-                    -e "s/PR_MODIFY_ALL/$PR_MODIFY_ALL/" \
-                    -e "s/PR_MODIFY_LOCK/$PR_MODIFY_LOCK/" \
-                    -e "s/PR_MODIFY_REST/$PR_MODIFY_REST/" \
-                    -e "s/PR_EXTRA/$PR_EXTRA/" templates/pr-report.md)
-                
-                echo "MESSAGE=${MESSAGE}" >> $GITHUB_ENV
-                
-            - name: Eliminar reportes previos de los comentarios
-              run: |
+      - name: Generate the message for commenting on the pr
+        run: |
+          OVER_THE_LIMIT=$(($PR_MODIFY_REST - $MAX_LINES_PR))
+
+          if [[ OVER_THE_LIMIT ]]; then
+            NOTE="@${{ github.actor }} Ups, tu pull request tiene mas de $MAX_LINES_PR lineas modificadas, tienes un total de $PR_MODIFY_REST, por favor considera dividir este pull request."
+          else
+            NOTE="Perfecto, el pull request no sobrepasa las $MAX_LINES_PR lineas modificadas."
+          fi
+
+          MESSAGE=$(sed -e ':a;N;$!ba;s/\n/\\n/g'\
+              -e "s/NOTE/$NOTE/" \
+              -e "s/PR_ADDITIONS/$PR_ADDITIONS/" \
+              -e "s/PR_DELETIONS/$PR_DELETIONS/" \
+              -e "s/PR_MODIFY_ALL/$PR_MODIFY_ALL/" \
+              -e "s/PR_MODIFY_LOCK/$PR_MODIFY_LOCK/" \
+              -e "s/PR_MODIFY_REST/$PR_MODIFY_REST/" \
+              -e "s/PR_EXTRA/$PR_EXTRA/" templates/pr-report.md)
+
+          echo "MESSAGE=${MESSAGE}" >> $GITHUB_ENV
+          echo "OVER_THE_LIMIT=${OVER_THE_LIMIT}" >> $GITHUB_ENV
+
+      - name: Remove previous reports from comments
+        run: |
+          COMMENTS=$(curl -L \
+              -H "Accept: application/vnd.github+json" \
+              -H "Authorization: token $GITHUB_TOKEN" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              $PR_COMMENTS_URL | jq '.[] | select(.body | contains("Resultados de la pre-revisión del PR"))')
               
-                COMMENTS=$(curl -L \
-                    -H "Accept: application/vnd.github+json" \
-                    -H "Authorization: token $GITHUB_TOKEN" \
-                    -H "X-GitHub-Api-Version: 2022-11-28" \
-                    $PR_COMMENTS_URL | jq '.[] | select(.body | contains("Resultados de la pre-revisión del PR"))')
-                    
-                COMMENTS_ID=$(echo "$COMMENTS" | jq -r '.id')
-                
-                # Recorrer el array de IDs y eliminar cada uno
-                
-                IFS=$'\n' # Establecer el separador de campo para nueva línea
-                for ID in $COMMENTS_ID; do
-                    
-                    COMMENT_URL="${{ github.api_url }}/repos/${{ github.repository }}/issues/comments/$ID"
-                
-                    curl -L \
-                        -X DELETE \
-                        -H "Accept: application/vnd.github+json" \
-                        -H "Authorization: token $GITHUB_TOKEN" \
-                        -H "X-GitHub-Api-Version: 2022-11-28" \
-                        $COMMENT_URL
-                done                
+          COMMENTS_ID=$(echo "$COMMENTS" | jq -r '.id')
 
-            - name: Realizar el comentario en el pr
-              run: |
-                curl \
-                -X POST \
-                $PR_COMMENTS_URL \
-                -H "Content-Type: application/json" \
-                -H "Authorization: token $GITHUB_TOKEN" \
-                --data "{ \"body\": \"$MESSAGE\" }"
-                
-            - name: Comprobar el numero de lineas modificadas y mostrar un error si no se cumple el limite
-              run: |
-                if [[ $PR_MODIFY_REST -gt $MAX_LINES_PR ]]
-                then
-                    echo "Warning - total lines changed is greater than" $MAX_LINES_PR.
-                    echo "Please consider breaking this PR down."
-                    exit 1
-                fi
+          IFS=$'\n'
+          for ID in $COMMENTS_ID; do
+              
+              COMMENT_URL="${{ github.api_url }}/repos/${{ github.repository }}/issues/comments/$ID"
+
+              curl -L \
+                  -X DELETE \
+                  -H "Accept: application/vnd.github+json" \
+                  -H "Authorization: token $GITHUB_TOKEN" \
+                  -H "X-GitHub-Api-Version: 2022-11-28" \
+                  $COMMENT_URL
+          done
+
+      - name: Shows the report as a comment in the pr
+        run: |
+          curl \
+          -X POST \
+          $PR_COMMENTS_URL \
+          -H "Content-Type: application/json" \
+          -H "Authorization: token $GITHUB_TOKEN" \
+          --data "{ \"body\": \"$MESSAGE\" }"
+
+      - name: Stop the execution of the workflow if the limit of modified lines is exceeded.
+        run: |
+          if [[ $OVER_THE_LIMIT ]]
+          then
+              echo "Warning - total lines changed is greater than" $MAX_LINES_PR.
+              echo "Please consider breaking this PR down."
+              exit 1
+          fi
