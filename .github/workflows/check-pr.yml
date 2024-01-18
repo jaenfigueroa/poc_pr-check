@@ -52,7 +52,8 @@ jobs:
 
             - name: Generar el mensaje para comentar en el pr
               run: |
-                TEMPLATE_MESSAGE=$(cat "templates/pr-report.txt")
+                # TEMPLATE_MESSAGE=$(cat "templates/pr-report.txt")
+                TEMPLATE_MESSAGE=$(< "templates/pr-report.txt")
                 
                 # Reemplazar las variables
                 MESSAGE="${TEMPLATE_MESSAGE//\$PR_ADDITIONS/$PR_ADDITIONS}"
