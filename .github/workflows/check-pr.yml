@@ -52,14 +52,26 @@ jobs:
             NOTE="Perfecto, el pull request no sobrepasa las $MAX_LINES_PR lineas modificadas."
           fi
 
-          MESSAGE=$(sed -e ':a;N;$!ba;s/\n/\\n/g'\
-              -e "s/NOTE/$NOTE/" \
-              -e "s/PR_ADDITIONS/$PR_ADDITIONS/" \
-              -e "s/PR_DELETIONS/$PR_DELETIONS/" \
-              -e "s/PR_MODIFY_ALL/$PR_MODIFY_ALL/" \
-              -e "s/PR_MODIFY_LOCK/$PR_MODIFY_LOCK/" \
-              -e "s/PR_MODIFY_REST/$PR_MODIFY_REST/" \
-              -e "s/PR_EXTRA/$PR_EXTRA/" templates/pr-report.md)
+          #MESSAGE=$(sed -e ':a;N;$!ba;s/\n/\\n/g'\
+          #    -e "s/NOTE/$NOTE/" \
+          #    -e "s/PR_ADDITIONS/$PR_ADDITIONS/" \
+          #    -e "s/PR_DELETIONS/$PR_DELETIONS/" \
+          #    -e "s/PR_MODIFY_ALL/$PR_MODIFY_ALL/" \
+          #    -e "s/PR_MODIFY_LOCK/$PR_MODIFY_LOCK/" \
+          #    -e "s/PR_MODIFY_REST/$PR_MODIFY_REST/" \
+          #    -e "s/PR_EXTRA/$PR_EXTRA/" templates/pr-report.md)
+
+          MESSAGE=$(sed \
+            -e ':a;N;$!ba;s/\r//g' \
+            -e 's/\n/\\n/g' \
+            -e "s/NOTE/$NOTE/" \
+            -e "s/PR_ADDITIONS/$PR_ADDITIONS/" \
+            -e "s/PR_DELETIONS/$PR_DELETIONS/" \
+            -e "s/PR_MODIFY_ALL/$PR_MODIFY_ALL/" \
+            -e "s/PR_MODIFY_LOCK/$PR_MODIFY_LOCK/" \
+            -e "s/PR_MODIFY_REST/$PR_MODIFY_REST/" \
+            -e "s/PR_EXTRA/$PR_EXTRA/" \
+            templates/pr-report.md)
 
           echo $MESSAGE
           echo "MESSAGE=${MESSAGE}" >> $GITHUB_ENV
