@@ -61,6 +61,7 @@ jobs:
               -e "s/PR_MODIFY_REST/$PR_MODIFY_REST/" \
               -e "s/PR_EXTRA/$PR_EXTRA/" templates/pr-report.md)
 
+          echo $MESSAGE
           echo "MESSAGE=${MESSAGE}" >> $GITHUB_ENV
 
       - name: Remove previous reports from comments
